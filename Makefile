@@ -1,2 +1,12 @@
-tetris: main.c
-	gcc -Wall -std=c11 -o tetris tetris.c main.c
+CC = gcc
+CFLAGS = -Wall -std=c11
+PROGRAM = tetris
+SRCS = main.c tetris.c
+
+all: $(PROGRAM)
+
+$(PROGRAM): $(SRCS)
+	$(CC) $(CFLAGS) -o $(PROGRAM) $(SRCS)
+
+clean:
+	rm -f $(PROGRAM)
