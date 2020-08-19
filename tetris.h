@@ -22,7 +22,7 @@ typedef enum {
 	Operating
 } BlockKind;
 
-BlockKind field[21][12];
+BlockKind field[HEIGHT][WIDTH];
 
 
 extern int i_tet[4][4][2];
