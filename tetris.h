@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #define WIDTH 12
 #define HEIGHT 21
 
@@ -21,6 +22,14 @@ typedef enum {
 	Block,
 	Operating
 } BlockKind;
+
+
+typedef enum {
+	Up,
+	Down,
+	Left,
+	Right
+} Direction;
 
 BlockKind field[HEIGHT][WIDTH];
 
@@ -48,7 +57,7 @@ Tetrimino* tetriminos(TetriminoKind, int);
 
 void init_field();
 
-void put_tetrimino(int (*)[2], int, int);
+bool put_tetrimino(int (*)[2], int, int);
 
 void print_field();
 

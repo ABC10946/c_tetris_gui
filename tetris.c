@@ -179,12 +179,16 @@ void init_field() {
 	}
 }
 
-void put_tetrimino(int tetrimino[4][2], int x, int y) {
+bool put_tetrimino(int tetrimino[4][2], int x, int y) {
 	for(int th = 0; th < 4; th ++) {
 		int x_ = tetrimino[th][0];
 		int y_ = tetrimino[th][1];
+		if(field[y+y_][x+x_] == Block)
+			return false;
+
 		field[y+y_][x+x_] = Operating;
 	}
+	return true;
 }
 
 
@@ -217,7 +221,15 @@ void clear_operated_tetrimino() {
 
 
 void put_operated_tet(OperateTet opTet) {
+	BlockKind prevField[HEIGHT][WIDTH];
+	memcpy(prevField, field, sizeof(field));
+
 	Tetrimino *tetrimino = tetriminos(opTet.kind, opTet.rotation_id);
 
-	put_tetrimino(tetrimino->tet, opTet.x, opTet.y);
+	if(put_tetrimino(tetrimino->tet, opTet.x, opTet.y)) {
+		printf("move!\n");
+	} else {
+		printf("cannot move!\n");
+		memcpy(field, prevField, sizeof(field));
+	}
 }
