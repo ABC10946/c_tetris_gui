@@ -5,8 +5,6 @@
 #define HEIGHT 21
 
 
-extern int field[21][12];
-
 typedef enum {
 	Tet_I,
 	Tet_O,
@@ -16,6 +14,16 @@ typedef enum {
 	Tet_L,
 	Tet_T
 } TetriminoKind;
+
+
+typedef enum {
+	Space,
+	Block,
+	Operating
+} BlockKind;
+
+BlockKind field[21][12];
+
 
 extern int i_tet[4][4][2];
 extern int o_tet[4][4][2];
@@ -28,6 +36,7 @@ extern int t_tet[4][4][2];
 typedef struct Tetrimino {
 	int (*tet)[];
 } Tetrimino;
+
 
 Tetrimino* tetriminos(TetriminoKind, int);
 

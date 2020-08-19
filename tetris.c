@@ -1,6 +1,6 @@
 #include "tetris.h"
 
-int field[21][12] = {0};
+BlockKind field[21][12] = {};
 
 int i_tet[4][4][2] = {
 	{{0, 0}, 
@@ -168,22 +168,34 @@ Tetrimino* tetriminos(TetriminoKind kind, int rotation_id) {
 
 
 void init_field() {
-	memset(field, 0, sizeof(field));
 	for(int h = 0; h < HEIGHT; h++) {
 		for(int w = 0; w < WIDTH; w++) {
 			if(w == 0 || w == WIDTH-1 || h == HEIGHT-1) {
-				field[h][w] = 1;
+				field[h][w] = Block;
+			} else {
+				field[h][w] = Space;
 			}
 		}
 	}
 }
 
-
 void put_tetrimino(int tetrimino[4][2], int x, int y) {
 	for(int th = 0; th < 4; th ++) {
 		int x_ = tetrimino[th][0];
 		int y_ = tetrimino[th][1];
-		field[y+y_][x+x_] = 1;
+		field[y+y_][x+x_] = Operating;
+	}
+}
+
+void clear_operated_block() {
+	for(int h = 0; h < HEIGHT; h++) {
+		for(int w = 0; w < WIDTH; w++) {
+			if(w == 0 || w == WIDTH-1 || h == HEIGHT-1) {
+				field[h][w] = Block;
+			} else {
+				field[h][w] = Space;
+			}
+		}
 	}
 }
 
@@ -191,8 +203,11 @@ void put_tetrimino(int tetrimino[4][2], int x, int y) {
 void print_field() {
 	for(int h = 0; h < HEIGHT; h++) {
 		for(int w = 0; w < WIDTH; w++) {
-			if(field[h][w] == 1) {
+			if(field[h][w] == Block) {
 				printf("■ ");
+			}
+			else if (field[h][w] == Operating) {
+				printf("◆ ");
 			} else {
 				printf("□ ");
 			}

@@ -1,7 +1,6 @@
 #include "tetris.h"
 
 int main(int argc, char *argv[]) {
-	memset(field, 0, sizeof(field));
 	TetriminoKind kinds[7] = {
 		Tet_I,
 		Tet_O,
