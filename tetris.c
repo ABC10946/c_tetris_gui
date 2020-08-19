@@ -187,17 +187,6 @@ void put_tetrimino(int tetrimino[4][2], int x, int y) {
 	}
 }
 
-void clear_operated_block() {
-	for(int h = 0; h < HEIGHT; h++) {
-		for(int w = 0; w < WIDTH; w++) {
-			if(w == 0 || w == WIDTH-1 || h == HEIGHT-1) {
-				field[h][w] = Block;
-			} else {
-				field[h][w] = Space;
-			}
-		}
-	}
-}
 
 
 void print_field() {
@@ -214,4 +203,21 @@ void print_field() {
 		}
 		printf("\n");
 	}
+}
+
+void clear_operated_tetrimino() {
+	for(int h = 0; h < HEIGHT; h++) {
+		for(int w = 0; w < WIDTH; w++) {
+			if(field[h][w] == Operating) {
+				field[h][w] = Space;
+			}
+		}
+	}
+}
+
+
+void put_operated_tet(OperateTet opTet) {
+	Tetrimino *tetrimino = tetriminos(opTet.kind, opTet.rotation_id);
+
+	put_tetrimino(tetrimino->tet, opTet.x, opTet.y);
 }

@@ -37,11 +37,21 @@ typedef struct Tetrimino {
 	int (*tet)[];
 } Tetrimino;
 
+typedef struct OperateTet {
+	int x;
+	int y;
+	TetriminoKind kind;
+	int rotation_id;
+} OperateTet;
 
 Tetrimino* tetriminos(TetriminoKind, int);
 
 void init_field();
 
-void put_tetrimino();
+void put_tetrimino(int (*)[2], int, int);
 
 void print_field();
+
+void clear_operated_tetrimino();
+
+void put_operated_tet(OperateTet);
