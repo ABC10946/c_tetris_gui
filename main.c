@@ -11,17 +11,25 @@ int main(int argc, char *argv[]) {
 
 
 	for(int i=0; i < 6; i++) {
-		clear_operated_tetrimino();
-		put_operated_tet(opTet);
-		print_field();
 		opTet.y++;
+		if(!setable_operated_tet(opTet)) {
+			opTet.y--;
+			change_to_block(opTet);
+		}
+		print_field();
+		clear_operated_tetrimino();
 	}
 	
-	opTet.y = 15;
-	for(int i=0; i < 6; i++) {
-		clear_operated_tetrimino();
-		put_operated_tet(opTet);
+	opTet.kind = Tet_J;
+	opTet.rotation_id = 0;
+	opTet.y = 10;
+	for(int i=0; i < 10; i++) {
+		opTet.y++;
+		if(!setable_operated_tet(opTet)) {
+			opTet.y--;
+			change_to_block(opTet);
+		}
 		print_field();
-		opTet.x++;
+		clear_operated_tetrimino(opTet);
 	}
 }

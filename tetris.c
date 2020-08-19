@@ -1,6 +1,7 @@
 #include "tetris.h"
 
-BlockKind field[21][12] = {};
+BlockKind field[HEIGHT][WIDTH] = {};
+BlockKind prevField[HEIGHT][WIDTH] = {};
 
 int i_tet[4][4][2] = {
 	{{0, 0}, 
@@ -180,12 +181,17 @@ void init_field() {
 }
 
 bool put_tetrimino(int tetrimino[4][2], int x, int y) {
-	for(int th = 0; th < 4; th ++) {
+	if((field[y+tetrimino[0][1]][x+tetrimino[0][0]] == Block) ||
+	   (field[y+tetrimino[1][1]][x+tetrimino[1][0]] == Block) ||
+	   (field[y+tetrimino[2][1]][x+tetrimino[2][0]] == Block) ||
+	   (field[y+tetrimino[3][1]][x+tetrimino[3][0]] == Block)) {
+		   printf("touch!!\n");
+		return false;
+	}
+
+	for(int th=0; th < 4; th++) {
 		int x_ = tetrimino[th][0];
 		int y_ = tetrimino[th][1];
-		if(field[y+y_][x+x_] == Block)
-			return false;
-
 		field[y+y_][x+x_] = Operating;
 	}
 	return true;
@@ -220,16 +226,27 @@ void clear_operated_tetrimino() {
 }
 
 
-void put_operated_tet(OperateTet opTet) {
-	BlockKind prevField[HEIGHT][WIDTH];
-	memcpy(prevField, field, sizeof(field));
-
+bool setable_operated_tet(OperateTet opTet) {
 	Tetrimino *tetrimino = tetriminos(opTet.kind, opTet.rotation_id);
 
-	if(put_tetrimino(tetrimino->tet, opTet.x, opTet.y)) {
-		printf("move!\n");
-	} else {
-		printf("cannot move!\n");
-		memcpy(field, prevField, sizeof(field));
+	return put_tetrimino(tetrimino->tet, opTet.x, opTet.y);
+}
+
+void field_copy(BlockKind dest[HEIGHT][WIDTH], BlockKind source[HEIGHT][WIDTH]) {
+	for(int i = 0; i < HEIGHT; i++) {
+		for(int j = 0; j < WIDTH; j++) {
+			dest[i][j] = (BlockKind)source[i][j];
+		}
+	}
+}
+
+void change_to_block(OperateTet opTet) {
+	Tetrimino *tetrimino = tetriminos(opTet.kind, opTet.rotation_id);
+	int (*tet)[2] = tetrimino->tet;
+	for(int th = 0; th < 4; th ++) {
+		int x_ = tet[th][0];
+		int y_ = tet[th][1];
+
+		field[opTet.y+y_][opTet.x+x_] = Block;
 	}
 }
