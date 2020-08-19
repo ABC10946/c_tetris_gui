@@ -185,7 +185,6 @@ bool put_tetrimino(int tetrimino[4][2], int x, int y) {
 	   (field[y+tetrimino[1][1]][x+tetrimino[1][0]] == Block) ||
 	   (field[y+tetrimino[2][1]][x+tetrimino[2][0]] == Block) ||
 	   (field[y+tetrimino[3][1]][x+tetrimino[3][0]] == Block)) {
-		   printf("touch!!\n");
 		return false;
 	}
 
@@ -203,15 +202,14 @@ void print_field() {
 	for(int h = 0; h < HEIGHT; h++) {
 		for(int w = 0; w < WIDTH; w++) {
 			if(field[h][w] == Block) {
-				printf("■ ");
+				mvprintw(h, w, "#");
 			}
 			else if (field[h][w] == Operating) {
-				printf("◆ ");
+				mvprintw(h, w, "!");
 			} else {
-				printf("□ ");
+				mvprintw(h, w, "_");
 			}
 		}
-		printf("\n");
 	}
 }
 
