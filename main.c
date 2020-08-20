@@ -81,18 +81,15 @@ int main(int argc, char *argv[]) {
 				opTet.x--;
 			}
 		} else if (ch == KEY_DOWN) {
-			opTet.y ++;
-			if(!setable_operated_tet(opTet)) {
-				opTet.y--;
-				change_to_block(opTet);
-				for(int h = 0; h < HEIGHT; h++) {
-					if(is_full_line(h)) {
-						delete_line(h);
-						move_all_block(h, 1);
-					}
-				}
-				reset_operated_tetrimino();
+			fall_proc();
+		} else if (ch == KEY_UP) {
+			while(setable_operated_tet(opTet)) {
+				opTet.y++;
 			}
+			opTet.y--;
+			change_to_block(opTet);
+			remove_line_proc();
+			reset_operated_tetrimino();
 		} else if (ch == 'r') {
 			if(opTet.rotation_id < 3) {
 				opTet.rotation_id++;
