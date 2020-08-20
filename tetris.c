@@ -172,7 +172,7 @@ void init_field() {
 	for(int h = 0; h < HEIGHT; h++) {
 		for(int w = 0; w < WIDTH; w++) {
 			if(w == 0 || w == WIDTH-1 || h == HEIGHT-1) {
-				field[h][w] = Block;
+				field[h][w] = Wall;
 			} else {
 				field[h][w] = Space;
 			}
@@ -198,6 +198,8 @@ void print_field() {
 			}
 			else if (field[h][w] == Operating) {
 				mvprintw(h, w, "!");
+			} else if (field[h][w] == Wall) {
+				mvprintw(h, w, "+");
 			} else {
 				mvprintw(h, w, "_");
 			}
@@ -225,7 +227,13 @@ bool setable_operated_tet(OperateTet opTet) {
 	if((field[y+tet[0][1]][x+tet[0][0]] == Block) ||
 	   (field[y+tet[1][1]][x+tet[1][0]] == Block) ||
 	   (field[y+tet[2][1]][x+tet[2][0]] == Block) ||
-	   (field[y+tet[3][1]][x+tet[3][0]] == Block)) {
+	   (field[y+tet[3][1]][x+tet[3][0]] == Block) ||
+	   (field[y+tet[0][1]][x+tet[0][0]] == Wall) ||
+	   (field[y+tet[1][1]][x+tet[1][0]] == Wall) ||
+	   (field[y+tet[2][1]][x+tet[2][0]] == Wall) ||
+	   (field[y+tet[3][1]][x+tet[3][0]] == Wall)
+
+	   ) {
 		return false;
 	}
 

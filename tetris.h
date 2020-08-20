@@ -24,7 +24,8 @@ typedef enum {
 typedef enum {
 	Space,
 	Block,
-	Operating
+	Operating,
+	Wall
 } BlockKind;
 
 
