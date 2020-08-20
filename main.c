@@ -26,6 +26,8 @@ int main(int argc, char *argv[]) {
 
 	reset_operated_tetrimino();
 	while(true) {
+		put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
+
 		opTet.y++;
 		if(!setable_operated_tet(opTet)) {
 			opTet.y--;
@@ -50,8 +52,14 @@ int main(int argc, char *argv[]) {
 		} else if (ch == 'r') {
 			if(opTet.rotation_id < 3) {
 				opTet.rotation_id++;
+				if(!setable_operated_tet(opTet)) {
+					opTet.rotation_id--;
+				}
 			} else {
 				opTet.rotation_id = 0;
+				if(!setable_operated_tet(opTet)) {
+					opTet.rotation_id = 3;
+				}
 			}
 		}
 		clear_operated_tetrimino();

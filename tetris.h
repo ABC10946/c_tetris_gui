@@ -58,7 +58,7 @@ Tetrimino* tetriminos(TetriminoKind, int);
 
 void init_field();
 
-bool put_tetrimino(int (*)[2], int, int);
+void put_tetrimino(int (*)[2], int, int);
 
 void print_field();
 

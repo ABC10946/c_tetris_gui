@@ -180,20 +180,12 @@ void init_field() {
 	}
 }
 
-bool put_tetrimino(int tetrimino[4][2], int x, int y) {
-	if((field[y+tetrimino[0][1]][x+tetrimino[0][0]] == Block) ||
-	   (field[y+tetrimino[1][1]][x+tetrimino[1][0]] == Block) ||
-	   (field[y+tetrimino[2][1]][x+tetrimino[2][0]] == Block) ||
-	   (field[y+tetrimino[3][1]][x+tetrimino[3][0]] == Block)) {
-		return false;
-	}
-
+void put_tetrimino(int tetrimino[4][2], int x, int y) {
 	for(int th=0; th < 4; th++) {
 		int x_ = tetrimino[th][0];
 		int y_ = tetrimino[th][1];
 		field[y+y_][x+x_] = Operating;
 	}
-	return true;
 }
 
 
@@ -226,8 +218,18 @@ void clear_operated_tetrimino() {
 
 bool setable_operated_tet(OperateTet opTet) {
 	Tetrimino *tetrimino = tetriminos(opTet.kind, opTet.rotation_id);
+	int (*tet)[2] = tetrimino->tet;
+	int x = opTet.x;
+	int y = opTet.y;
 
-	return put_tetrimino(tetrimino->tet, opTet.x, opTet.y);
+	if((field[y+tet[0][1]][x+tet[0][0]] == Block) ||
+	   (field[y+tet[1][1]][x+tet[1][0]] == Block) ||
+	   (field[y+tet[2][1]][x+tet[2][0]] == Block) ||
+	   (field[y+tet[3][1]][x+tet[3][0]] == Block)) {
+		return false;
+	}
+
+	return true;
 }
 
 void field_copy(BlockKind dest[HEIGHT][WIDTH], BlockKind source[HEIGHT][WIDTH]) {
