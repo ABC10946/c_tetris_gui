@@ -18,6 +18,16 @@ void reset_operated_tetrimino() {
 	int i = rand()%7;
 	opTet.kind = kinds[i];
 	opTet.rotation_id = 0;
+
+	struct timespec ts;
+	ts.tv_sec = 1;
+	ts.tv_nsec = 0;
+
+	if(!setable_operated_tet(opTet)) {
+		mvprintw(10, 40, "gameover!!");
+		nanosleep(&ts, NULL);
+		reset_game();
+	}
 }
 
 long milisec_to_nanosec(int microsec) {

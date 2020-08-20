@@ -77,3 +77,5 @@ void move_all_block(int, int);
 void delete_line(int);
 
 bool is_full_line(int);
+
+void reset_game();

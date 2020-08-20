@@ -280,3 +280,13 @@ bool is_full_line(int line_num) {
 	if(ret == 10) return true;
 	return false;
 }
+
+void reset_game() {
+	for(int h = 0; h < HEIGHT; h++) {
+		for(int w = 0; w < WIDTH; w++) {
+			if(field[h][w] != Wall) {
+				field[h][w] = Space;
+			}
+		}
+	}
+}
