@@ -1,8 +1,11 @@
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ncurses.h>
+#include <time.h>
+#include <pthread.h>
 #define WIDTH 12
 #define HEIGHT 21
 
