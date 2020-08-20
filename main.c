@@ -100,6 +100,12 @@ void fall() {
 		if(!setable_operated_tet(opTet)) {
 			opTet.y--;
 			change_to_block(opTet);
+			for(int h = 0; h < HEIGHT; h++) {
+				if(is_full_line(h)) {
+					delete_line(h);
+					move_all_block(h, 1);
+				}
+			}
 			reset_operated_tetrimino();
 		}
 

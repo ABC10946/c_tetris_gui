@@ -71,3 +71,9 @@ void clear_operated_tetrimino();
 bool setable_operated_tet(OperateTet);
 
 void change_to_block(OperateTet);
+
+void move_all_block(int, int);
+
+void delete_line(int);
+
+bool is_full_line(int);

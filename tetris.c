@@ -251,3 +251,32 @@ void change_to_block(OperateTet opTet) {
 		field[opTet.y+y_][opTet.x+x_] = Block;
 	}
 }
+
+void move_all_block(int pivot, int step) {
+	for(int h = HEIGHT; h > 0; h--) {
+		for(int w = 0; w < WIDTH; w++) {
+			if(field[h][w] == Block && h < pivot) {
+				field[h][w] = Space;
+				field[h + step][w] = Block;
+			}
+		}
+	}
+}
+
+void delete_line(int line_num) {
+	for(int w = 0; w < WIDTH; w++) {
+		if(field[line_num][w] == Block) {
+			field[line_num][w] = Space;
+		}
+	}
+}
+
+bool is_full_line(int line_num) {
+	int ret = 0;
+	for(int w = 0; w < WIDTH; w++) {
+		if(field[line_num][w] == Block)
+			ret++;
+	}
+	if(ret == 10) return true;
+	return false;
+}
