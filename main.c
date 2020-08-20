@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 				opTet.x--;
 			}
 		} else if (ch == 'r') {
-			if(opTet.rotation_id < 4) {
+			if(opTet.rotation_id < 3) {
 				opTet.rotation_id++;
 			} else {
 				opTet.rotation_id = 0;
