@@ -27,6 +27,25 @@ long milisec_to_nanosec(int microsec) {
 void fall();
 void draw();
 
+void remove_line_proc() {
+	for(int h = 0; h < HEIGHT; h++) {
+		if(is_full_line(h)) {
+			delete_line(h);
+			move_all_block(h, 1);
+		}
+	}
+}
+
+void fall_proc() {
+	opTet.y ++;
+	if(!setable_operated_tet(opTet)) {
+		opTet.y--;
+		change_to_block(opTet);
+		remove_line_proc();
+		reset_operated_tetrimino();
+	}
+}
+
 int main(int argc, char *argv[]) {
 	pthread_t fall_thread;
 	pthread_t draw_thread;
@@ -40,6 +59,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	initscr();
+	keypad(stdscr, true);
 	timeout(0);
 	init_field(field);
 
@@ -50,15 +70,28 @@ int main(int argc, char *argv[]) {
 			pthread_cancel(fall_thread);
 			pthread_cancel(draw_thread);
 			break;
-		} else if (ch == 'h') {
+		} else if (ch == KEY_LEFT) {
 			opTet.x--;
 			if(!setable_operated_tet(opTet)) {
 				opTet.x++;
 			}
-		} else if (ch =='l') {
+		} else if (ch == KEY_RIGHT) {
 			opTet.x++;
 			if(!setable_operated_tet(opTet)) {
 				opTet.x--;
+			}
+		} else if (ch == KEY_DOWN) {
+			opTet.y ++;
+			if(!setable_operated_tet(opTet)) {
+				opTet.y--;
+				change_to_block(opTet);
+				for(int h = 0; h < HEIGHT; h++) {
+					if(is_full_line(h)) {
+						delete_line(h);
+						move_all_block(h, 1);
+					}
+				}
+				reset_operated_tetrimino();
 			}
 		} else if (ch == 'r') {
 			if(opTet.rotation_id < 3) {
@@ -96,18 +129,7 @@ void fall() {
 	ts.tv_nsec = milisec_to_nanosec(700);
 
 	while(true) {
-		opTet.y ++;
-		if(!setable_operated_tet(opTet)) {
-			opTet.y--;
-			change_to_block(opTet);
-			for(int h = 0; h < HEIGHT; h++) {
-				if(is_full_line(h)) {
-					delete_line(h);
-					move_all_block(h, 1);
-				}
-			}
-			reset_operated_tetrimino();
-		}
+		fall_proc();
 
 		getch();
 		nanosleep(&ts, NULL);
