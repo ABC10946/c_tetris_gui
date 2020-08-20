@@ -232,13 +232,6 @@ bool setable_operated_tet(OperateTet opTet) {
 	return true;
 }
 
-void field_copy(BlockKind dest[HEIGHT][WIDTH], BlockKind source[HEIGHT][WIDTH]) {
-	for(int i = 0; i < HEIGHT; i++) {
-		for(int j = 0; j < WIDTH; j++) {
-			dest[i][j] = (BlockKind)source[i][j];
-		}
-	}
-}
 
 void change_to_block(OperateTet opTet) {
 	Tetrimino *tetrimino = tetriminos(opTet.kind, opTet.rotation_id);

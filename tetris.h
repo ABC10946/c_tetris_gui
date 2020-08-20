@@ -70,5 +70,3 @@ void clear_operated_tetrimino();
 bool setable_operated_tet(OperateTet);
 
 void change_to_block(OperateTet);
-
-void field_copy(BlockKind dest[HEIGHT][WIDTH], BlockKind source[HEIGHT][WIDTH]);
