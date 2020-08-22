@@ -1,6 +1,7 @@
 #include "tetris.h"
 
 OperateTet opTet;
+OperateTet nextOpTet;
 
 TetriminoKind kinds[7] = {
 	Tet_I,
@@ -15,9 +16,11 @@ TetriminoKind kinds[7] = {
 void reset_operated_tetrimino() {
 	opTet.x = 5;
 	opTet.y = 0;
-	int i = rand()%7;
-	opTet.kind = kinds[i];
+	opTet.kind = nextOpTet.kind;
 	opTet.rotation_id = 0;
+
+	int nextOpKindIdx = rand()%7;
+	nextOpTet.kind = kinds[nextOpKindIdx];
 
 	struct timespec ts;
 	ts.tv_sec = 1;
@@ -56,7 +59,25 @@ void fall_proc() {
 	}
 }
 
+// フィールド外にもテトリミノを描画する関数
+void printTetrimino(int tetrimino[4][2], int x, int y) {
+	for(int i=0; i < 4; i++) {
+		for(int j=0; j < 4; j++) {
+			mvprintw(y+i, x+j, " ");
+		}
+	}
+
+	for(int th=0; th < 4; th++) {
+		int x_ = tetrimino[th][0];
+		int y_ = tetrimino[th][1];
+		mvprintw(y+y_, x+x_, "#");
+	}
+}
+
 int main(int argc, char *argv[]) {
+	nextOpTet.kind = kinds[rand()%7];
+	nextOpTet.rotation_id = 0;
+
 	pthread_t fall_thread;
 	pthread_t draw_thread;
 
@@ -124,6 +145,7 @@ void draw() {
 	ts.tv_nsec = milisec_to_nanosec(50);
 	while(true) {
 		put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
+		printTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
 		print_field();
 		clear_operated_tetrimino();
 		nanosleep(&ts, NULL);
