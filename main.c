@@ -1,7 +1,9 @@
 #include "tetris.h"
 
+
 OperateTet opTet;
 OperateTet nextOpTet;
+
 
 TetriminoKind kinds[7] = {
 	Tet_I,
@@ -12,6 +14,7 @@ TetriminoKind kinds[7] = {
 	Tet_L,
 	Tet_T
 };
+
 
 void reset_operated_tetrimino() {
 	opTet.x = 5;
@@ -33,12 +36,12 @@ void reset_operated_tetrimino() {
 	}
 }
 
+
+//ミリ秒からナノ秒に変換する関数
 long milisec_to_nanosec(double milisec) {
 	return 1000000 * milisec;
 }
 
-void fall();
-void draw();
 
 void remove_line_proc() {
 	for(int h = 0; h < HEIGHT; h++) {
@@ -49,6 +52,7 @@ void remove_line_proc() {
 	}
 }
 
+// テトリミノの落下処理と床当たり判定処理
 void fall_proc() {
 	opTet.y ++;
 	if(!setable_operated_tet(opTet)) {
@@ -58,6 +62,7 @@ void fall_proc() {
 		reset_operated_tetrimino();
 	}
 }
+
 
 // フィールド外にもテトリミノを描画する関数
 void printTetrimino(int tetrimino[4][2], int x, int y) {
@@ -74,10 +79,20 @@ void printTetrimino(int tetrimino[4][2], int x, int y) {
 	}
 }
 
+
+void draw() {
+	put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
+	printTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
+	print_field();
+	clear_operated_tetrimino();
+}
+
+
 int main(int argc, char *argv[]) {
 	nextOpTet.kind = kinds[rand()%7];
 	nextOpTet.rotation_id = 0;
 
+	// 毎秒60フレームで実行
 	double frame_freq = (1.0/60.0) * 1000;
 	int frame_count = 0;
 
@@ -92,12 +107,14 @@ int main(int argc, char *argv[]) {
 
 	reset_operated_tetrimino();
 	while(true) {
-		int ch = getch();
+		// 60フレームごとに落下処理
 		if(frame_count % 60 == 0) {
 			fall_proc();
 			frame_count = 0;
 		}
 		draw();
+
+		int ch = getch();
 		if (ch == 'q') {
 			break;
 		} else if (ch == KEY_LEFT) {
@@ -139,11 +156,4 @@ int main(int argc, char *argv[]) {
 	}
 
 	endwin();
-}
-
-void draw() {
-	put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
-	printTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
-	print_field();
-	clear_operated_tetrimino();
 }
