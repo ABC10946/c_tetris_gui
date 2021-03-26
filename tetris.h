@@ -61,6 +61,12 @@ typedef struct OperateTet {
 
 Tetrimino* tetriminos(TetriminoKind, int);
 
+OperateTet opTet;
+
+OperateTet nextOpTet;
+
+TetriminoKind kinds[7];
+
 void init_field();
 
 void put_tetrimino(int (*)[2], int, int);
@@ -80,5 +86,15 @@ void delete_line(int);
 bool is_full_line(int);
 
 void reset_game();
+
+void reset_operated_tetrimino();
+
+void left_proc();
+
+void right_proc();
+
+void fall_proc();
+
+void up_proc();
 
 #endif
