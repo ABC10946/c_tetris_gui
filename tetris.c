@@ -3,6 +3,16 @@
 BlockKind field[HEIGHT][WIDTH] = {};
 BlockKind prevField[HEIGHT][WIDTH] = {};
 
+TetriminoKind kinds[7] = {
+	Tet_I,
+	Tet_O,
+	Tet_S,
+	Tet_Z,
+	Tet_J,
+	Tet_L,
+	Tet_T
+};
+
 int i_tet[4][4][2] = {
 	{{0, 0}, 
 	 {1, 0}, 

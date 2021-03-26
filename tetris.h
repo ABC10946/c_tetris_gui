@@ -61,6 +61,12 @@ typedef struct OperateTet {
 
 Tetrimino* tetriminos(TetriminoKind, int);
 
+OperateTet opTet;
+
+OperateTet nextOpTet;
+
+TetriminoKind kinds[7];
+
 void init_field();
 
 void put_tetrimino(int (*)[2], int, int);

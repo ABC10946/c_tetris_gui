@@ -1,21 +1,6 @@
 #include "tetris.h"
 
 
-OperateTet opTet;
-OperateTet nextOpTet;
-
-
-TetriminoKind kinds[7] = {
-	Tet_I,
-	Tet_O,
-	Tet_S,
-	Tet_Z,
-	Tet_J,
-	Tet_L,
-	Tet_T
-};
-
-
 void reset_operated_tetrimino() {
 	opTet.x = 5;
 	opTet.y = 0;
