@@ -1,4 +1,5 @@
 #include "tetris.h"
+#include "gui.h"
 
 
 OperateTet opTet;
@@ -89,6 +90,11 @@ void draw() {
 
 
 int main(int argc, char *argv[]) {
+	glutInit(&argc, argv);
+	glutCreateWindow(argv[0]);
+	glutDisplayFunc(display);
+	glutMainLoop();
+
 	nextOpTet.kind = kinds[rand()%7];
 	nextOpTet.rotation_id = 0;
 
