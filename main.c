@@ -33,8 +33,8 @@ void reset_operated_tetrimino() {
 	}
 }
 
-long milisec_to_nanosec(int microsec) {
-	return 1000000 * microsec;
+long milisec_to_nanosec(double milisec) {
+	return 1000000 * milisec;
 }
 
 void fall();
@@ -78,16 +78,12 @@ int main(int argc, char *argv[]) {
 	nextOpTet.kind = kinds[rand()%7];
 	nextOpTet.rotation_id = 0;
 
-	pthread_t fall_thread;
-	pthread_t draw_thread;
+	double frame_freq = (1.0/60.0) * 1000;
+	int frame_count = 0;
 
-	int fall_thread_ret = pthread_create(&fall_thread, NULL, (void *)fall, NULL);
-	int draw_thread_ret = pthread_create(&draw_thread, NULL, (void *)draw, NULL);
-
-	if(fall_thread_ret != 0 && draw_thread_ret != 0) {
-		fprintf(stderr, "thread error");
-		exit(1);
-	}
+	struct timespec ts;
+	ts.tv_sec = 0;
+	ts.tv_nsec = milisec_to_nanosec(frame_freq);
 
 	initscr();
 	keypad(stdscr, true);
@@ -97,9 +93,12 @@ int main(int argc, char *argv[]) {
 	reset_operated_tetrimino();
 	while(true) {
 		int ch = getch();
+		if(frame_count % 60 == 0) {
+			fall_proc();
+			frame_count = 0;
+		}
+		draw();
 		if (ch == 'q') {
-			pthread_cancel(fall_thread);
-			pthread_cancel(draw_thread);
 			break;
 		} else if (ch == KEY_LEFT) {
 			opTet.x--;
@@ -134,33 +133,17 @@ int main(int argc, char *argv[]) {
 				}
 			}
 		}
+
+		frame_count++;
+		nanosleep(&ts, NULL);
 	}
 
 	endwin();
 }
 
 void draw() {
-	struct timespec ts;
-	ts.tv_sec = 0;
-	ts.tv_nsec = milisec_to_nanosec(50);
-	while(true) {
-		put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
-		printTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
-		print_field();
-		clear_operated_tetrimino();
-		nanosleep(&ts, NULL);
-	}
-}
-
-void fall() {
-	struct timespec ts;
-	ts.tv_sec = 0;
-	ts.tv_nsec = milisec_to_nanosec(700);
-
-	while(true) {
-		fall_proc();
-
-		getch();
-		nanosleep(&ts, NULL);
-	}
+	put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
+	printTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
+	print_field();
+	clear_operated_tetrimino();
 }

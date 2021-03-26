@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <ncurses.h>
 #include <time.h>
-#include <pthread.h>
 #define WIDTH 12
 #define HEIGHT 21
 
