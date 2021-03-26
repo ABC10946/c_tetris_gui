@@ -1,3 +1,5 @@
+#ifndef TETRIS_H
+#define TETRIS_H
 #define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <string.h>
@@ -78,3 +80,5 @@ void delete_line(int);
 bool is_full_line(int);
 
 void reset_game();
+
+#endif
