@@ -300,3 +300,71 @@ void reset_game() {
 		}
 	}
 }
+
+
+void reset_operated_tetrimino() {
+	opTet.x = 5;
+	opTet.y = 0;
+	opTet.kind = nextOpTet.kind;
+	opTet.rotation_id = 0;
+
+	int nextOpKindIdx = rand()%7;
+	nextOpTet.kind = kinds[nextOpKindIdx];
+
+	struct timespec ts;
+	ts.tv_sec = 1;
+	ts.tv_nsec = 0;
+
+	if(!setable_operated_tet(opTet)) {
+		mvprintw(10, 40, "gameover!!");
+		nanosleep(&ts, NULL);
+		reset_game();
+	}
+}
+
+// 左入力処理
+void left_proc() {
+	opTet.x--;
+	if(!setable_operated_tet(opTet)) {
+		opTet.x++;
+	}
+}
+
+// 右入力処理
+void right_proc() {
+	opTet.x++;
+	if(!setable_operated_tet(opTet)) {
+		opTet.x--;
+	}
+}
+
+void remove_line_proc() {
+	for(int h = 0; h < HEIGHT; h++) {
+		if(is_full_line(h)) {
+			delete_line(h);
+			move_all_block(h, 1);
+		}
+	}
+}
+
+// テトリミノの落下処理と床当たり判定処理
+void fall_proc() {
+	opTet.y ++;
+	if(!setable_operated_tet(opTet)) {
+		opTet.y--;
+		change_to_block(opTet);
+		remove_line_proc();
+		reset_operated_tetrimino();
+	}
+}
+
+// 上入力処理
+void up_proc() {
+	while(setable_operated_tet(opTet)) {
+		opTet.y++;
+	}
+	opTet.y--;
+	change_to_block(opTet);
+	remove_line_proc();
+	reset_operated_tetrimino();
+}
