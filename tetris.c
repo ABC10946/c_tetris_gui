@@ -386,12 +386,10 @@ void hold_tet() {
     if (holdOpTet.kind == Tet_NULL) {
         holdOpTet.kind = opTet.kind;
         opTet.kind = nextOpTet.kind;
-        setNextOpTet();
     } else {
         OperateTet tempTet;
         tempTet.kind = holdOpTet.kind;
         holdOpTet.kind = opTet.kind;
         opTet.kind = tempTet.kind;
-        setNextOpTet();
     }
 }
