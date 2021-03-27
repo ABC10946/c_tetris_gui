@@ -17,7 +17,8 @@ typedef enum {
     Tet_Z,
     Tet_J,
     Tet_L,
-    Tet_T
+    Tet_T,
+    Tet_NULL
 } TetriminoKind;
 
 
@@ -64,6 +65,8 @@ OperateTet opTet;
 
 OperateTet nextOpTet;
 
+OperateTet holdOpTet;
+
 TetriminoKind kinds[7];
 
 void init_field();
@@ -97,5 +100,7 @@ void fall_proc();
 void up_proc();
 
 void rotate_proc();
+
+void hold_tet();
 
 #endif

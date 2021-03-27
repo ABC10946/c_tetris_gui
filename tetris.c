@@ -179,6 +179,7 @@ Tetrimino* tetriminos(TetriminoKind kind, int rotation_id) {
 
 
 void init_field() {
+    holdOpTet.kind = Tet_NULL;
     for(int h = 0; h < HEIGHT; h++) {
         for(int w = 0; w < WIDTH; w++) {
             if(w == 0 || w == WIDTH-1 || h == HEIGHT-1) {
@@ -278,6 +279,7 @@ bool is_full_line(int line_num) {
 
 
 void reset_game() {
+    holdOpTet.kind = Tet_NULL;
     for(int h = 0; h < HEIGHT; h++) {
         for(int w = 0; w < WIDTH; w++) {
             if(field[h][w] != Wall) {
@@ -287,6 +289,10 @@ void reset_game() {
     }
 }
 
+void setNextOpTet() {
+    int nextOpKindIdx = rand()%7;
+    nextOpTet.kind = kinds[nextOpKindIdx];
+}
 
 void reset_operated_tetrimino() {
     opTet.x = 5;
@@ -294,8 +300,7 @@ void reset_operated_tetrimino() {
     opTet.kind = nextOpTet.kind;
     opTet.rotation_id = 0;
 
-    int nextOpKindIdx = rand()%7;
-    nextOpTet.kind = kinds[nextOpKindIdx];
+    setNextOpTet();
 
     struct timespec ts;
     ts.tv_sec = 1;
@@ -372,5 +377,21 @@ void rotate_proc() {
         if(!setable_operated_tet(opTet)) {
             opTet.rotation_id = 3;
         }
+    }
+}
+
+
+// テトリミノ保持処理
+void hold_tet() {
+    if (holdOpTet.kind == Tet_NULL) {
+        holdOpTet.kind = opTet.kind;
+        opTet.kind = nextOpTet.kind;
+        setNextOpTet();
+    } else {
+        OperateTet tempTet;
+        tempTet.kind = holdOpTet.kind;
+        holdOpTet.kind = opTet.kind;
+        opTet.kind = tempTet.kind;
+        setNextOpTet();
     }
 }

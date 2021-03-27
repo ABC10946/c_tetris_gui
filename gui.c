@@ -33,11 +33,18 @@ void polygonRectangle(float x, float y) {
     glEnd();
 }
 
-void displayTetrimino(int tetrimino[4][2], int x, int y) {
-    for(int th=0; th < 4; th++) {
-        int x_ = tetrimino[th][0];
-        int y_ = tetrimino[th][1];
-        polygonRectangle((x+x_) * rect_width, (y+y_) * rect_height);
+void displayTetrimino(TetriminoKind kind, int rotation_id, int x, int y) {
+    if(kind != Tet_NULL) {
+        int tetrimino[4][2];
+        memcpy(tetrimino, tetriminos(kind, rotation_id)->tet, sizeof(tetrimino));
+        for(int th=0; th < 4; th++) {
+            int x_ = tetrimino[th][0];
+            int y_ = tetrimino[th][1];
+            glColor3d(1.0, 1.0, 1.0);
+            polygonRectangle((x+x_) * rect_width, (y+y_) * rect_height);
+            glColor3d(0.0, 0.0, 0.0);
+            strokeRectangle((x+x_) * rect_width, (y+y_) * rect_height);
+        }
     }
 }
 
@@ -66,7 +73,11 @@ void display(void) {
     put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
 
     glClear(GL_COLOR_BUFFER_BIT);
-    displayTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
+    // 次テトリミノを表示
+    displayTetrimino(nextOpTet.kind, 0, 14, (HEIGHT-2));
+
+    // ホールドテトリミノを表示
+    displayTetrimino(holdOpTet.kind, 0, -5, (HEIGHT-2));
     display_field();
     glFlush();
 
@@ -79,6 +90,9 @@ void keyboard(unsigned char key, int x, int y) {
             exit(0);
         case 'r':
             rotate_proc();
+            break;
+        case 's':
+            hold_tet();
             break;
     }
 }
