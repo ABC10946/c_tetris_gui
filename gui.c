@@ -33,17 +33,28 @@ void polygonRectangle(float x, float y) {
     glEnd();
 }
 
-void displayTetrimino(TetriminoKind kind, int rotation_id, int x, int y) {
+typedef enum {
+    NORMAL_RECT, 
+    EMPTY_RECT
+} RectStyle;
+
+
+void displayTetrimino(TetriminoKind kind, int rotation_id, int x, int y, RectStyle style) {
     if(kind != Tet_NULL) {
         int tetrimino[4][2];
         memcpy(tetrimino, tetriminos(kind, rotation_id)->tet, sizeof(tetrimino));
         for(int th=0; th < 4; th++) {
             int x_ = tetrimino[th][0];
             int y_ = tetrimino[th][1];
-            glColor3d(1.0, 1.0, 1.0);
-            polygonRectangle((x+x_) * rect_width, (y+y_) * rect_height);
-            glColor3d(0.0, 0.0, 0.0);
-            strokeRectangle((x+x_) * rect_width, (y+y_) * rect_height);
+            if(style == NORMAL_RECT) {
+                glColor3d(1.0, 1.0, 1.0);
+                polygonRectangle((x+x_) * rect_width, (HEIGHT-(y+y_)) * rect_height);
+                glColor3d(0.0, 0.0, 0.0);
+                strokeRectangle((x+x_) * rect_width, (HEIGHT-(y+y_)) * rect_height);
+            } else if(style == EMPTY_RECT) {
+                glColor3d(1.0, 1.0, 1.0);
+                strokeRectangle((x+x_) * rect_width, (HEIGHT-(y+y_)) * rect_height);
+            }
         }
     }
 }
@@ -63,10 +74,23 @@ void display_field() {
                 strokeRectangle(w * rect_width, (HEIGHT-h) * rect_height);
             } else if (field[h][w] == Operating) {
                 glColor3d(1.0, 1.0, 1.0);
+                polygonRectangle(w * rect_width, (HEIGHT-h) * rect_height);
+                glColor3d(0.0, 0.0, 0.0);
                 strokeRectangle(w * rect_width, (HEIGHT-h) * rect_height);
             }
         }
     }
+}
+
+void displayFallPosition() {
+    OperateTet tempTet;
+    tempTet = opTet;
+
+    while(setable_operated_tet(tempTet)) {
+        tempTet.y++;
+    }
+    tempTet.y--;
+    displayTetrimino(tempTet.kind, tempTet.rotation_id, tempTet.x, tempTet.y, EMPTY_RECT);
 }
 
 void display(void) {
@@ -74,10 +98,14 @@ void display(void) {
 
     glClear(GL_COLOR_BUFFER_BIT);
     // 次テトリミノを表示
-    displayTetrimino(nextOpTet.kind, 0, WIDTH+2, (HEIGHT-2));
+    displayTetrimino(nextOpTet.kind, 0, WIDTH+2, 2, NORMAL_RECT);
 
     // ホールドテトリミノを表示
-    displayTetrimino(holdOpTet.kind, 0, -5, (HEIGHT-2));
+    displayTetrimino(holdOpTet.kind, 0, -5, 2, NORMAL_RECT);
+
+    // 落下位置を表示
+    displayFallPosition();
+
     display_field();
     glFlush();
 
