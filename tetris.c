@@ -199,24 +199,6 @@ void put_tetrimino(int tetrimino[4][2], int x, int y) {
 }
 
 
-
-void print_field() {
-	for(int h = 0; h < HEIGHT; h++) {
-		for(int w = 0; w < WIDTH; w++) {
-			if(field[h][w] == Block) {
-				mvprintw(h, w, "#");
-			}
-			else if (field[h][w] == Operating) {
-				mvprintw(h, w, "!");
-			} else if (field[h][w] == Wall) {
-				mvprintw(h, w, "+");
-			} else {
-				mvprintw(h, w, "_");
-			}
-		}
-	}
-}
-
 void clear_operated_tetrimino() {
 	for(int h = 0; h < HEIGHT; h++) {
 		for(int w = 0; w < WIDTH; w++) {
@@ -262,6 +244,7 @@ void change_to_block(OperateTet opTet) {
 	}
 }
 
+
 void move_all_block(int pivot, int step) {
 	for(int h = HEIGHT; h > 0; h--) {
 		for(int w = 0; w < WIDTH; w++) {
@@ -273,6 +256,7 @@ void move_all_block(int pivot, int step) {
 	}
 }
 
+
 void delete_line(int line_num) {
 	for(int w = 0; w < WIDTH; w++) {
 		if(field[line_num][w] == Block) {
@@ -280,6 +264,7 @@ void delete_line(int line_num) {
 		}
 	}
 }
+
 
 bool is_full_line(int line_num) {
 	int ret = 0;
@@ -290,6 +275,7 @@ bool is_full_line(int line_num) {
 	if(ret == 10) return true;
 	return false;
 }
+
 
 void reset_game() {
 	for(int h = 0; h < HEIGHT; h++) {
@@ -316,11 +302,11 @@ void reset_operated_tetrimino() {
 	ts.tv_nsec = 0;
 
 	if(!setable_operated_tet(opTet)) {
-		mvprintw(10, 40, "gameover!!");
 		nanosleep(&ts, NULL);
 		reset_game();
 	}
 }
+
 
 // 左入力処理
 void left_proc() {
@@ -330,6 +316,7 @@ void left_proc() {
 	}
 }
 
+
 // 右入力処理
 void right_proc() {
 	opTet.x++;
@@ -337,6 +324,7 @@ void right_proc() {
 		opTet.x--;
 	}
 }
+
 
 void remove_line_proc() {
 	for(int h = 0; h < HEIGHT; h++) {
@@ -346,6 +334,7 @@ void remove_line_proc() {
 		}
 	}
 }
+
 
 // テトリミノの落下処理と床当たり判定処理
 void fall_proc() {
@@ -358,6 +347,7 @@ void fall_proc() {
 	}
 }
 
+
 // 上入力処理
 void up_proc() {
 	while(setable_operated_tet(opTet)) {
@@ -367,4 +357,20 @@ void up_proc() {
 	change_to_block(opTet);
 	remove_line_proc();
 	reset_operated_tetrimino();
+}
+
+
+// 回転処理
+void rotate_proc() {
+	if(opTet.rotation_id < 3) {
+		opTet.rotation_id++;
+		if(!setable_operated_tet(opTet)) {
+			opTet.rotation_id--;
+		}
+	} else {
+		opTet.rotation_id = 0;
+		if(!setable_operated_tet(opTet)) {
+			opTet.rotation_id = 3;
+		}
+	}
 }

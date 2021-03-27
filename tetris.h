@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <ncurses.h>
 #include <time.h>
 #define WIDTH 12
 #define HEIGHT 21
@@ -96,5 +95,7 @@ void right_proc();
 void fall_proc();
 
 void up_proc();
+
+void rotate_proc();
 
 #endif
