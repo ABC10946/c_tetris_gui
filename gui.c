@@ -34,11 +34,11 @@ void polygonRectangle(float x, float y) {
 }
 
 void displayTetrimino(int tetrimino[4][2], int x, int y) {
-	for(int th=0; th < 4; th++) {
-		int x_ = tetrimino[th][0];
-		int y_ = tetrimino[th][1];
+    for(int th=0; th < 4; th++) {
+        int x_ = tetrimino[th][0];
+        int y_ = tetrimino[th][1];
         polygonRectangle((x+x_) * rect_width, (y+y_) * rect_height);
-	}
+    }
 }
 
 void display_field() {
@@ -63,14 +63,14 @@ void display_field() {
 }
 
 void display(void) {
-	put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
+    put_tetrimino(tetriminos(opTet.kind, opTet.rotation_id)->tet, opTet.x, opTet.y);
 
     glClear(GL_COLOR_BUFFER_BIT);
-	displayTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
-	display_field();
+    displayTetrimino(tetriminos(nextOpTet.kind, 0)->tet, 15, 2);
+    display_field();
     glFlush();
 
-	clear_operated_tetrimino();
+    clear_operated_tetrimino();
 }
 
 void keyboard(unsigned char key, int x, int y) {

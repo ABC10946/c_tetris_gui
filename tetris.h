@@ -11,29 +11,29 @@
 
 
 typedef enum {
-	Tet_I,
-	Tet_O,
-	Tet_S,
-	Tet_Z,
-	Tet_J,
-	Tet_L,
-	Tet_T
+    Tet_I,
+    Tet_O,
+    Tet_S,
+    Tet_Z,
+    Tet_J,
+    Tet_L,
+    Tet_T
 } TetriminoKind;
 
 
 typedef enum {
-	Space,
-	Block,
-	Operating,
-	Wall
+    Space,
+    Block,
+    Operating,
+    Wall
 } BlockKind;
 
 
 typedef enum {
-	Up,
-	Down,
-	Left,
-	Right
+    Up,
+    Down,
+    Left,
+    Right
 } Direction;
 
 BlockKind field[HEIGHT][WIDTH];
@@ -48,14 +48,14 @@ extern int l_tet[4][4][2];
 extern int t_tet[4][4][2];
 
 typedef struct Tetrimino {
-	int (*tet)[];
+    int (*tet)[];
 } Tetrimino;
 
 typedef struct OperateTet {
-	int x;
-	int y;
-	TetriminoKind kind;
-	int rotation_id;
+    int x;
+    int y;
+    TetriminoKind kind;
+    int rotation_id;
 } OperateTet;
 
 Tetrimino* tetriminos(TetriminoKind, int);
