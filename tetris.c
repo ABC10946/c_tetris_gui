@@ -273,7 +273,7 @@ bool is_full_line(int line_num) {
         if(field[line_num][w] == Block)
             ret++;
     }
-    if(ret == 10) return true;
+    if(ret == WIDTH-2) return true;
     return false;
 }
 

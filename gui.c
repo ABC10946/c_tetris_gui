@@ -74,7 +74,7 @@ void display(void) {
 
     glClear(GL_COLOR_BUFFER_BIT);
     // 次テトリミノを表示
-    displayTetrimino(nextOpTet.kind, 0, 14, (HEIGHT-2));
+    displayTetrimino(nextOpTet.kind, 0, WIDTH+2, (HEIGHT-2));
 
     // ホールドテトリミノを表示
     displayTetrimino(holdOpTet.kind, 0, -5, (HEIGHT-2));
