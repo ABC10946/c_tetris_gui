@@ -384,12 +384,25 @@ void rotate_proc() {
 // テトリミノ保持処理
 void hold_tet() {
     if (holdOpTet.kind == Tet_NULL) {
-        holdOpTet.kind = opTet.kind;
-        opTet.kind = nextOpTet.kind;
+        OperateTet tempTet;
+        tempTet = opTet;
+        tempTet.kind = nextOpTet.kind;
+
+        if(setable_operated_tet(tempTet)) {
+            holdOpTet.kind = opTet.kind;
+            opTet.kind = nextOpTet.kind;
+        }
+
     } else {
         OperateTet tempTet;
+        tempTet = opTet;
         tempTet.kind = holdOpTet.kind;
-        holdOpTet.kind = opTet.kind;
-        opTet.kind = tempTet.kind;
+
+        if(setable_operated_tet(tempTet)) {
+            OperateTet swapTet;
+            swapTet.kind = holdOpTet.kind;
+            holdOpTet.kind = opTet.kind;
+            opTet.kind = swapTet.kind;
+        }
     }
 }
