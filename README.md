@@ -1,5 +1,11 @@
 # c_tetris_gui
 
+## 必須ライブラリのインストール
+
+```
+$ sudo apt install freeglut3-dev
+```
+
 ## ビルドと実行方法
 
 ```
